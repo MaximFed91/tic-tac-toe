@@ -12,69 +12,77 @@ class TicTacToe {
     }
 
     getCurrentPlayerSymbol() {
-        this.carentPlayer === 'x' ? 'x' : 'o';
+        if (this.carentPlayer === 'x') {
+            return 'x';
+        } else {
+            return 'o';
+        }
     }
 
     nextTurn(rowIndex, columnIndex) {
-        if (this.carentPlayer === 'x') {
-            this.matrix[rowIndex][columnIndex] = 'x';
-            this.carentPlayer = 'o';
-        } else {
-            this.matrix[rowIndex][columnIndex] = 'o';
-            this.carentPlayer = 'x';
-        }
-        const test = char => {
-            let bool = true;
-            for (let i = 0; i < 3; i++) {
-                bool &= (this.matrix[i][i] === char);
-            }
-            if (bool) {
-                this.winner = char;
-                this.finish = true;
-                return;
-            }
-
-            bool = true;
-            for (let i = 0; i < 3; i++) {
-                bool &= (this.matrix[i][2 - i] === char);
-            }
-            if (bool) {
-                this.winner = char;
-                this.finish = true;
-                return;
+        if (this.matrix[rowIndex][columnIndex] === undefined) {
+            if (this.carentPlayer === 'x') {
+                this.matrix[rowIndex][columnIndex] = 'x';
+                this.carentPlayer = 'o';
+            } else {
+                this.matrix[rowIndex][columnIndex] = 'o';
+                this.carentPlayer = 'x';
             }
 
 
-            for (let j = 0; j < 3; j++) {
-                bool = true;
+            const test = char => {
+                let bool = true;
                 for (let i = 0; i < 3; i++) {
-                    bool &= (this.matrix[j][i] === char);
+                    bool &= (this.matrix[i][i] === char);
                 }
                 if (bool) {
                     this.winner = char;
                     this.finish = true;
                     return;
                 }
-            }
-            
-            for (let j = 0; j < 3; j++) {
+
                 bool = true;
                 for (let i = 0; i < 3; i++) {
-                    bool &= (this.matrix[i][j] === char);
+                    bool &= (this.matrix[i][2 - i] === char);
                 }
                 if (bool) {
                     this.winner = char;
                     this.finish = true;
                     return;
                 }
+
+
+                for (let j = 0; j < 3; j++) {
+                    bool = true;
+                    for (let i = 0; i < 3; i++) {
+                        bool &= (this.matrix[j][i] === char);
+                    }
+                    if (bool) {
+                        this.winner = char;
+                        this.finish = true;
+                        return;
+                    }
+                }
+
+                for (let j = 0; j < 3; j++) {
+                    bool = true;
+                    for (let i = 0; i < 3; i++) {
+                        bool &= (this.matrix[i][j] === char);
+                    }
+                    if (bool) {
+                        this.winner = char;
+                        this.finish = true;
+                        return;
+                    }
+                }
+            };
+            this.counter++;
+            test('x');
+            test('o');
+            if (this.counter === 9) {
+                this.noTurn = true;
+                this.finish = true;
             }
-        };
-        this.counter++;
-        test('x');
-        test('o');
-        if (this.counter === 9){
-            this.noTurn = true;
-            this.finish = true;
         }
     }
 
@@ -91,8 +99,8 @@ class TicTacToe {
     }
 
     isDraw() {
-        if(this.noTurn && !this.winner){
-           return true;
+        if (this.noTurn && !this.winner) {
+            return true;
         } else {
             return false;
         }
